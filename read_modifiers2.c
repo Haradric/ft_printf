@@ -12,7 +12,7 @@
 
 #include "ft_printf_private.h"
 
-size_t	read_flags(char *str, t_description *conversion)
+size_t	read_flags(const char *str, t_description *conversion)
 {
 	size_t	len;
 	char	*flag;
@@ -36,60 +36,50 @@ size_t	read_flags(char *str, t_description *conversion)
 	return (len);
 }
 
-size_t	read_width(char *str, t_description *conversion)
+size_t	read_width(const char *str, t_description *conversion)
 {
 	size_t	len;
-	char	*s;
-	char	*width;
 
 	len = 0;
-	width = NULL;
-	if (ft_isdigit(*str))
+	if (ft_isdigit(*(str + len)) || *(str + len) == '*')
 	{
-		s = str;
-		while (*s != '\0' && ft_isdigit(*s))
+		while (*(str + len) != '\0' && ft_isdigit(*(str + len)))
+			len++;
+		if (*(str + len) == '*')
 		{
-			s++;
+			get_width_from_param(conversion);
 			len++;
 		}
-		if (len > 0)
-		{
-			width = ft_strsub(str, 0, len);
-			conversion->width = ft_atoi(width);
-			free(width);
-		}
+		else if (len > 0)
+			conversion->width = ft_atoi(str);
 	}
-	return (len);
+	return (ft_strlen(str) - ft_strlen(str + len));
 }
 
-size_t	read_precision(char *str, t_description *conversion)
+size_t	read_precision(const char *str, t_description *conversion)
 {
 	size_t	len;
-	char	*s;
-	char	*precision;
 
 	len = 0;
-	precision = NULL;
-	s = str;
-	while (*s == '.')
+	if (*str == '.')
 	{
-		len = 0;
-		s++;
-		while (*(s + len) != '\0' && ft_isdigit(*(s + len)))
+		len++;
+		while (*(str + len) != '\0' && ft_isdigit(*(str + len)))
 			len++;
-		if (len > 0)
+		if (*(str + len) == '*')
 		{
-			precision = ft_strsub(s, 0, len);
-			conversion->precision = ft_atoi(precision);
-			free(precision);
+			get_precision_from_param(conversion);
+			len++;
 		}
+		else if (len > 0)
+			conversion->precision = ft_atoi(str + 1);
 		else
 			conversion->precision = 0;
 	}
-	return (ft_strlen(str) - ft_strlen(s + len));
+	return (ft_strlen(str) - ft_strlen(str + len));
 }
 
-size_t	read_length(char *str, t_description *conversion)
+size_t	read_length(const char *str, t_description *conversion)
 {
 	size_t	len;
 	int		length;
@@ -116,7 +106,7 @@ size_t	read_length(char *str, t_description *conversion)
 	return (len);
 }
 
-size_t	read_type(char *str, t_description *conversion)
+size_t	read_type(const char *str, t_description *conversion)
 {
 	char	*type;
 

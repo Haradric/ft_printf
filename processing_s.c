@@ -52,13 +52,13 @@ size_t		processing_s(t_description *conversion)
 		return (processing_ls(conversion));
 	if (conversion->param.string == NULL)
 	{
-		if (conversion->width == 0)
+		if (conversion->width != 0 && conversion->flag.zero == 1)
+			conversion->result = ft_strnew(0);
+		else
 		{
 			conversion->result = NULL;
 			return (0);
 		}
-		else
-			conversion->result = ft_strnew(0);
 	}
 	else
 		conversion->result = ft_strdup(conversion->param.string);

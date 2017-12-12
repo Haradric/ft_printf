@@ -42,27 +42,27 @@ typedef struct		s_arg
 
 typedef struct		s_description
 {
-	t_arg			param;
 	va_list			args;
 	t_flag			flag;
-	char			*result;
-	size_t			len;
 	int				width;
 	int				precision;
 	int				length;
 	char			type;
-
-
+	t_arg			param;
+	char			*result;
+	size_t			len;
 }					t_description;
 
 int					ft_printf(const char *format, ...);
-size_t				read_modifiers(char *str, t_description *conversion);
+size_t				read_modifiers(const char *str, t_description *conversion);
 void				clean_description(t_description *conversion);
-size_t				read_flags(char *str, t_description *conversion);
-size_t				read_width(char *str, t_description *conversion);
-size_t				read_precision(char *str, t_description *conversion);
-size_t				read_length(char *str, t_description *conversion);
-size_t				read_type(char *str, t_description *conversion);
+size_t				read_flags(const char *str, t_description *conversion);
+size_t				read_width(const char *str, t_description *conversion);
+size_t				read_precision(const char *str, t_description *conversion);
+size_t				read_length(const char *str, t_description *conversion);
+size_t				read_type(const char *str, t_description *conversion);
+void				get_width_from_param(t_description *conversion);
+void				get_precision_from_param(t_description *conversion);
 size_t				read_args(t_description *conversion);
 
 int					taking_without_length(t_description *conversion);
@@ -88,10 +88,9 @@ size_t				processing_0(t_description *conversion);
 void				expand_str(char **s1, const char *s2, int pos);
 char				*itoa_base(intmax_t n, int base);
 char				*uitoa_base(uintmax_t n, int base);
-void				strtoupper(char *str);
 int					power(int x, size_t n);
 
-size_t				wchar_len(wint_t wchar);
+size_t				wchar_len(wchar_t wchar);
 char				*wchar_to_char(wchar_t wchar);
 
 #endif

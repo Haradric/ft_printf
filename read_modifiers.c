@@ -12,22 +12,24 @@
 
 #include "ft_printf_private.h"
 
-char	*take_description(const char *str)
+void	get_width_from_param(t_description *conversion)
 {
-	char	*s;
-	size_t	len;
-
-	len = 0;
-	s = (char *)str;
-	while (*s != '\0' && ft_strchr("%-+ #0123456789.lhjztlsSpdDioOuUxXcC", *s))
+	conversion->width = va_arg(conversion->args, int);
+	if (conversion->width < 0)
 	{
-		s++;
-		len++;
+		conversion->flag.minus = 1;
+		conversion->width *= -1;
 	}
-	return (ft_strsub(str, 0, len));
 }
 
-size_t	read_modifiers(char *str, t_description *conversion)
+void	get_precision_from_param(t_description *conversion)
+{
+	conversion->precision = va_arg(conversion->args, int);
+	if (conversion->precision < 0)
+		conversion->precision = -1;
+}
+
+size_t	read_modifiers(const char *str, t_description *conversion)
 {
 	size_t	len;
 	size_t	diff;

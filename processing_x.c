@@ -73,7 +73,7 @@ size_t		processing_x(t_description *conversion)
 	else
 		alternate_form(conversion);
 	if (conversion->type == 'X')
-		strtoupper(conversion->result);
+		ft_strtoupper(conversion->result);
 	conversion->len = (int)ft_strlen(conversion->result);
 	return (conversion->len);
 }

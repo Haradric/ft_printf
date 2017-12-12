@@ -12,7 +12,7 @@
 
 #include "ft_printf_private.h"
 
-size_t	wchar_len(wint_t wchar)
+size_t	wchar_len(wchar_t wchar)
 {
 	if (wchar > 0 && wchar < 127)
 		return (1);

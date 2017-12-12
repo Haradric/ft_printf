@@ -21,6 +21,15 @@ static void	apply_width(t_description *conversion)
 	diff = conversion->width - (int)ft_strlen(conversion->result);
 	diff -= (conversion->result[0] == '\0') ? 1 : 0;
 	pos = (conversion->flag.minus == 1) ? 1 : 0;
+	if (!ft_memcmp(conversion->result, "\0", 1) && conversion->flag.minus == 1)
+	{
+		free(conversion->result);
+		conversion->result = ft_strnew(diff + 2);
+		ft_memset(conversion->result + 1, (conversion->flag.zero == 1 &&
+conversion->flag.minus != 1) ? '0' : ' ', diff);
+		conversion->len += diff;
+		return ;
+	}
 	if (conversion->flag.zero == 1 && conversion->flag.minus != 1)
 		filler = ft_strdup("0");
 	else

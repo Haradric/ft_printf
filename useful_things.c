@@ -75,15 +75,6 @@ char	*uitoa_base(uintmax_t n, int base)
 	return (str);
 }
 
-void	strtoupper(char *str)
-{
-	while (*str)
-	{
-		*str = (char)ft_toupper(*str);
-		str++;
-	}
-}
-
 int		power(int x, size_t n)
 {
 	if (n == 0)

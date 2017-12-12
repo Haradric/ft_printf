@@ -12,16 +12,16 @@
 
 #include "ft_printf_private.h"
 
-size_t	print_format(t_description *conversion)
+size_t	print_format(t_description *conversion, int fd)
 {
 	if (conversion->result == NULL)
 	{
-		write(1, "(null)", 6);
+		write(fd, "(null)", 6);
 		return (6);
 	}
 	else
 	{
-		write(1, conversion->result, conversion->len);
+		write(fd, conversion->result, conversion->len);
 		return (conversion->len);
 	}
 }
@@ -31,7 +31,9 @@ int		ft_printf(const char *format, ...)
 	char			*str;
 	t_description	conversion;
 	size_t			len;
+	int				fd;
 
+	fd = 1;
 	len = 0;
 	str = (char *)format;
 	va_start(conversion.args, format);
@@ -42,11 +44,11 @@ int		ft_printf(const char *format, ...)
 			clean_description(&conversion);
 			str += read_modifiers(str, &conversion);
 			process_modifiers(&conversion);
-			len += print_format(&conversion);
+			len += print_format(&conversion, fd);
 			free(conversion.result);
 			continue ;
 		}
-		write(1, str++, 1);
+		write(fd, str++, 1);
 		len++;
 	}
 	va_end(conversion.args);
