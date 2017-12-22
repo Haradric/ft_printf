@@ -40,8 +40,8 @@ all: $(NAME)
 $(NAME): $(LIBFT) $(OBJECT)
 	@echo "\033[34mcreating $(NAME)\033[39m"
 	@ar rc $(NAME) $(OBJECT)
-	@echo "\033[34madding libft objects to $(NAME)"
-	ar r $(NAME) libft/*.o
+	@echo "\033[34madding libft objects to $(NAME)\033[39m"
+	@ar r $(NAME) libft/*.o
 	@echo "\033[34mgenerating index to $(NAME)\033[39m"
 	@ranlib $(NAME)
 
