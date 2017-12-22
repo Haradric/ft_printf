@@ -57,9 +57,9 @@ clean:
 	@rm -f $(OBJECT)
 
 fclean:
+	@make fclean -C libft
 	@echo "\033[34mremoving object files of libftprintf\033[39m"
 	@rm -f $(OBJECT)
-	@make fclean -C libft
 	@echo "\033[34mremoving $(NAME)\033[39m"
 	@rm -f $(NAME)
 
