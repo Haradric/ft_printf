@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_private.h"
+#include "ft_printf.h"
 
 size_t	read_flags(const char *str, t_description *conversion)
 {

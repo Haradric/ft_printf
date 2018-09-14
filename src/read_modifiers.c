@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_private.h"
+#include "ft_printf.h"
 
 void	get_width_from_param(t_description *conversion)
 {

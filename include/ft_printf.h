@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_PRIVATE_H
-# define FT_PRINTF_PRIVATE_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-# include "./libft/libft.h"
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <wchar.h>
 # include <stdint.h>
+# include "libft.h"
 
 typedef struct		s_flag
 {
@@ -94,4 +94,3 @@ size_t				wchar_len(wchar_t wchar);
 char				*wchar_to_char(wchar_t wchar);
 
 #endif
-

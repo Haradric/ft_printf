@@ -11,56 +11,49 @@
 #******************************************************************************#
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror
-NAME = libftprintf.a
-SOURCE =	ft_printf.c\
-			read_modifiers.c\
-			read_modifiers2.c\
-			read_arguments.c\
-			read_arguments2.c\
-			clean_description.c\
-			useful_things.c\
-			processing.c\
-			processing_percent.c\
-			processing_x.c\
-			processing_s.c\
-			processing_ls.c\
-			processing_c.c\
-			processing_o.c\
-			processing_di.c\
-			processing_u.c\
-			processing_p.c\
-			wchar.c
+override CFLAGS += -Wall -Wextra -Werror
+SOURCE =	src/ft_printf.c          \
+			src/read_modifiers.c     \
+			src/read_modifiers2.c    \
+			src/read_arguments.c     \
+			src/read_arguments2.c    \
+			src/clean_description.c  \
+			src/useful_things.c      \
+			src/processing.c         \
+			src/processing_percent.c \
+			src/processing_x.c       \
+			src/processing_s.c       \
+			src/processing_ls.c      \
+			src/processing_c.c       \
+			src/processing_o.c       \
+			src/processing_di.c      \
+			src/processing_u.c       \
+			src/processing_p.c       \
+			src/wchar.c
 
 OBJECT = $(SOURCE:.c=.o)
-LIBFT = libft/libft.a
+NAME   = libftprintf.a
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJECT)
+$(NAME): $(OBJECT)
 	@echo "\033[34mcreating $(NAME)\033[39m"
 	@ar rc $(NAME) $(OBJECT)
-	@echo "\033[34madding libft objects to $(NAME)\033[39m"
-	@ar r $(NAME) libft/*.o
 	@echo "\033[34mgenerating index to $(NAME)\033[39m"
 	@ranlib $(NAME)
 
-$(LIBFT):
-	make -C libft
-
 %.o: %.c
-	$(CC) $(FLAGS) -o $@ -c $<
+	$(CC) -Iinclude $(CFLAGS) -o $@ -c $<
 
 clean:
-	@make clean -C libft
 	@echo "\033[34mremoving object files of libftprintf\033[39m"
 	@rm -f $(OBJECT)
 
 fclean:
-	@make fclean -C libft
 	@echo "\033[34mremoving object files of libftprintf\033[39m"
 	@rm -f $(OBJECT)
 	@echo "\033[34mremoving $(NAME)\033[39m"
 	@rm -f $(NAME)
 
 re: fclean all
+

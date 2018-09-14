@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_private.h"
+#include "ft_printf.h"
 
 static intmax_t	absolute(intmax_t n)
 {

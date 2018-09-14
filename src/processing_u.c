@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_private.h"
+#include "ft_printf.h"
 
 static void	apply_precision(t_description *conversion)
 {

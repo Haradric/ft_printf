@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_private.h"
+#include "ft_printf.h"
 
 size_t	process_modifiers(t_description *conversion)
 {

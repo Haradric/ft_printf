@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   processing_xX.c                                    :+:      :+:    :+:   */
+/*   processing_o.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbraslav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/10 12:38:36 by mbraslav          #+#    #+#             */
-/*   Updated: 2017/02/16 16:22:09 by mbraslav         ###   ########.fr       */
+/*   Created: 2017/02/15 14:50:12 by mbraslav          #+#    #+#             */
+/*   Updated: 2017/02/16 16:13:30 by mbraslav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_private.h"
+#include "ft_printf.h"
 
 static void	standard_form(t_description *conversion)
 {
@@ -32,21 +32,21 @@ static void	standard_form(t_description *conversion)
 
 static void	alternate_form(t_description *conversion)
 {
-	int		len;
+	size_t	len;
 	int		diff;
 
-	len = (int)ft_strlen(conversion->result);
-	if (conversion->flag.zero == 0)
-		expand_str(&conversion->result, "0x", 0);
-	else
-		conversion->width -= 2;
+	len = ft_strlen(conversion->result);
+	if (conversion->flag.zero == 0 && conversion->param.uinteger != 0)
+		expand_str(&conversion->result, "0", 0);
+	else if (!(conversion->param.uinteger == 0 && conversion->precision == 0))
+		conversion->width -= 1;
 	standard_form(conversion);
 	if (conversion->flag.zero == 1)
 	{
-		if ((diff = (int)ft_strlen(conversion->result - len)) >= 2)
+		if ((diff = (int)ft_strlen(conversion->result - len)) >= 1)
 			while (diff-- > 0)
 				expand_str(&conversion->result, " ", 0);
-		expand_str(&conversion->result, "0x", 0);
+		expand_str(&conversion->result, "0", 0);
 	}
 }
 
@@ -55,25 +55,28 @@ static void	apply_precision(t_description *conversion)
 	int		n;
 
 	if ((n = conversion->precision - (int)ft_strlen(conversion->result)) > 0)
+	{
+		if (conversion->flag.hash == 1 && n > 0)
+			n--;
 		while (n-- > 0)
 			expand_str(&conversion->result, "0", 0);
+	}
 }
 
-size_t		processing_x(t_description *conversion)
+size_t		processing_o(t_description *conversion)
 {
-	conversion->result = uitoa_base(conversion->param.uinteger, 16);
+	conversion->result = uitoa_base(conversion->param.uinteger, 8);
 	apply_precision(conversion);
-	if (conversion->param.uinteger == 0 && conversion->precision == 0)
+	if (conversion->param.uinteger == 0 && conversion->precision == 0 &&
+		conversion->flag.hash != 1)
 	{
 		free(conversion->result);
 		conversion->result = ft_strnew(0);
 	}
-	if (conversion->flag.hash == 0 || conversion->param.uinteger == 0)
+	if (conversion->flag.hash == 0)
 		standard_form(conversion);
 	else
 		alternate_form(conversion);
-	if (conversion->type == 'X')
-		ft_strtoupper(conversion->result);
-	conversion->len = (int)ft_strlen(conversion->result);
+	conversion->len = ft_strlen(conversion->result);
 	return (conversion->len);
 }

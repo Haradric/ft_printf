@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   processing_s.c                                     :+:      :+:    :+:   */
+/*   processing_ls.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbraslav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/13 14:23:20 by mbraslav          #+#    #+#             */
-/*   Updated: 2017/02/13 14:23:22 by mbraslav         ###   ########.fr       */
+/*   Created: 2017/02/27 14:27:00 by mbraslav          #+#    #+#             */
+/*   Updated: 2017/02/27 14:27:01 by mbraslav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_private.h"
+#include "ft_printf.h"
 
 static void	apply_precision(t_description *conversion)
 {
 	char	*new;
 	size_t	len;
+	wchar_t	*s;
 
 	if (conversion->precision == -1 ||
 		(conversion->precision >= (int)ft_strlen(conversion->result)))
-		len = ft_strlen(conversion->result);
+		len = (int)ft_strlen(conversion->result);
 	else
-		len = conversion->precision;
+	{
+		len = 0;
+		s = conversion->param.maxstring;
+		while ((int)len + (int)wchar_len(*s) <= conversion->precision)
+			len += wchar_len(*s++);
+	}
 	new = ft_strsub(conversion->result, 0, len);
 	free(conversion->result);
 	conversion->result = new;
@@ -45,25 +51,40 @@ static void	apply_width(t_description *conversion)
 	free(filler);
 }
 
-size_t		processing_s(t_description *conversion)
+static char	*wchar_str_to_char(const wchar_t *str)
 {
-	if (conversion->type == 'S' ||
-		(conversion->type == 's' && conversion->length == 3))
-		return (processing_ls(conversion));
-	if (conversion->param.string == NULL)
+	wchar_t	*s1;
+	char	*s2;
+	char	*wchar;
+
+	s1 = (wchar_t *)str;
+	s2 = ft_strnew(0);
+	while (*s1)
 	{
-		if (conversion->width != 0 && conversion->flag.zero == 1)
-			conversion->result = ft_strnew(0);
-		else
+		wchar = wchar_to_char(*s1);
+		expand_str(&s2, wchar, 1);
+		free(wchar);
+		s1++;
+	}
+	return (s2);
+}
+
+size_t		processing_ls(t_description *conversion)
+{
+	if (conversion->param.maxstring == NULL)
+	{
+		if (conversion->width == 0)
 		{
 			conversion->result = NULL;
 			return (0);
 		}
+		else
+			conversion->result = ft_strnew(0);
 	}
 	else
-		conversion->result = ft_strdup(conversion->param.string);
+		conversion->result = wchar_str_to_char(conversion->param.maxstring);
 	apply_precision(conversion);
 	apply_width(conversion);
-	conversion->len = (int)ft_strlen(conversion->result);
+	conversion->len += ft_strlen(conversion->result);
 	return (conversion->len);
 }
