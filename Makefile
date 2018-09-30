@@ -43,7 +43,7 @@ $(NAME): $(OBJECT)
 	@ranlib $(NAME)
 
 %.o: %.c
-	$(CC) -Iinclude $(CFLAGS) -o $@ -c $<
+	$(CC) -Iinclude -Isrc $(CFLAGS) -o $@ -c $<
 
 clean:
 	@echo "\033[34mremoving object files of libftprintf\033[39m"
@@ -56,4 +56,3 @@ fclean:
 	@rm -f $(NAME)
 
 re: fclean all
-

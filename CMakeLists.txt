@@ -7,28 +7,44 @@ set(CMAKE_STATIC_LIBRARY_PREFIX "")
 
 add_library(${PROJECT_NAME} STATIC "")
 
-target_compile_options(    ${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror)
-target_include_directories(${PROJECT_NAME} PUBLIC include)
-
-target_sources(${PROJECT_NAME}
-    PRIVATE
-        src/ft_printf.c
-        src/read_modifiers.c
-        src/read_modifiers2.c
-        src/read_arguments.c
-        src/read_arguments2.c
-        src/clean_description.c
-        src/useful_things.c
-        src/processing.c
-        src/processing_percent.c
-        src/processing_x.c
-        src/processing_s.c
-        src/processing_ls.c
-        src/processing_c.c
-        src/processing_o.c
-        src/processing_di.c
-        src/processing_u.c
-        src/processing_p.c
-        src/wchar.c
+target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+        libft
 )
 
+target_compile_options(${PROJECT_NAME}
+    PUBLIC
+        -Wall
+        -Wextra
+        -Werror
+)
+
+target_include_directories(${PROJECT_NAME}
+    INTERFACE
+        ${CMAKE_CURRENT_LIST_DIR}/include
+)
+
+target_sources(${PROJECT_NAME}
+    INTERFACE
+        ${CMAKE_CURRENT_LIST_DIR}/include/libftprintf.h
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/src/ft_printf.h
+        ${CMAKE_CURRENT_LIST_DIR}/src/ft_printf.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/read_modifiers.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/read_modifiers2.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/read_arguments.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/read_arguments2.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/clean_description.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/useful_things.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_percent.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_x.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_s.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_ls.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_c.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_o.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_di.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_u.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/processing_p.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/wchar.c
+)
